@@ -71,8 +71,6 @@ ccccccc
                 do k=1,nr
                     phia(k)=(-1)**(nr+k)*sqrt(1d0/rmax/xle(k)/(1d0-xle(k)))
                 end do
-ccccccc              
-              
 ccccccc
         end subroutine rmat_int
 ccccccc
@@ -183,24 +181,31 @@ ccccccc
                 end do 
             end do
 ccccccc
-!V_{ij}(r)=V_{ij}^{C}(r)+V_{ij}^{N}(r)
             do i=1,beta%nchmax
                 do j=1,beta%nchmax
                     do k=1,nr
-                        Vc(k,i,j)=VijC(k,i,j)+VijN(k,i,j)
+                        Vc(k,i,j)=VijN(k,i,j)+VijC(k,i,j)
+                        write(333,*) xle(k)*rmax,real(Vc(k,i,j))
                     end do
+                    write(333,*) '& '
                 end do
             end do
+cccccccc
+! 
+! 
+! 
+! 
+! 
+! 
+! 
+!
+!test case
 ccccccc
         case('test')
 
            do k=1,nr
              Vc(k,1,1)=testpot(xle(k)*rmax)
            end do
-
-            do k=1,nr
-                write(56,*) xle(k)*rmax,real(Vc(k,1,1))
-            end do
 
 
             
@@ -213,7 +218,7 @@ ccccccc
         subroutine rmatrix()
 ccccccc
         implicit none
-        integer::i,j,k,mm,nn,w !sum variables
+        integer::i,j,k,mm,nn !sum variables
         integer::li,lj     !lc(i),lc(j)
 ccccccc
 !coulcc variables: (all complex arguments with subscript c)
@@ -224,14 +229,8 @@ ccccccc
         integer::MODE1
 ccccccc
         E_0=(20d0,0.1d0)
-        w=0
-       
 ccccccc
-             do while(abs(real(E)-real(E_0))>1e-3)
-                w=w+1
-                write(*,*) 'w',w
                 E=E_0
-              !  write(*,*) 'E',E
 ccccccc
                 do i=1,beta%nchmax
 ccccccc                    
@@ -268,7 +267,7 @@ ccccccc
                      hlp_i=GC_c(NL)
                      dhlp_i=GCP_c(NL)
 ccccccc
-                    B_i(i)=ki_c*rmax*dhlp_i/hlp_i
+                    B_i(i)=2d0*ki_c*rmax*dhlp_i/hlp_i
 
 ccccccc
                     deallocate(FC_c,GC_c,FCP_c,GCP_c,SIG)
@@ -291,11 +290,8 @@ ccccccc
                     end if
 
                 end do
-
-               if(w==1) then
-                B_i=(0d0,0d0)
-               end if 
-            !   write(*,*) 'B_i', B_i
+ccccccc
+               write(*,*) 'B_i', B_i
 ccccccc
         do mm=1,nr
             do i=1,beta%nchmax
@@ -359,11 +355,6 @@ ccccccc
                 end do
             end do
         end do    
-        do i=1,nr*beta%nchmax
-            write(555,*) C(i,:)
-        end do
-ccccccc
-
 ccccccc
         call ZGEEVS(nr*beta%nchmax,C,w1,vl1,vr1)
 ccccccc
@@ -391,7 +382,7 @@ ccccccc
 
           E_0=w1(index(k))
           write(*,*) 'E_0',E_0
-              end do  
+
 ccccccc        
         do i=1,nr*beta%nchmax
         write(333,*) w1(index(i))
@@ -414,23 +405,14 @@ ccccccc
 
 
 
+
+
+
+
+        
 ccccccc
-        ! do i=1,nr*beta%nchmax
-        !         do k=1,nr
-        !             wf_int(k,1,i)=vr1(i,index(1))*(rmax*wle(i))**(-0.5d0)
-        !     end do
-        ! end do
-! ccccccc
-!         do i=1,nr
-!             write(444,*) xle(i)*rmax,abs(wf_int(i,1,1))
-!         end do
-
-
-
-
-
-
-
+        deallocate(Vc)
+ccccccc
 !get the inversion of Cmatrix, and the inversion is stored just in C.
 !         call mat_inv(C,nr*beta%nchmax,nr*beta%nchmax)
 ! !Rmatrix , R_{ij}=hbar^2/(2mu a)*\sum_{mn}φ_n(a)(C^{-1})_{in,jm}φ_m(a)
