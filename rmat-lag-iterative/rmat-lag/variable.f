@@ -7,21 +7,23 @@ ccccccc
         complex*16,allocatable::Vc(:,:,:)
         complex*16,allocatable::Vcouple(:,:,:,:)
         complex*16,allocatable::T(:,:,:)
-        complex*16,allocatable::B_i(:)
+        real*8,allocatable::B_i(:)
         complex*16,allocatable::Ech(:,:,:)
         complex*16,allocatable::C(:,:)
         complex*16,allocatable::Rmat(:,:)
         complex*16,allocatable::Z_O(:,:)
         complex*16,allocatable::Z_I(:,:)
         complex*16,allocatable::Smat(:,:)
-        complex*16,allocatable::u_exta(:,:)    !size: (nch,nch), u_{ij}^{ext}(a)
-        complex*16,allocatable::u_extap(:,:)   !size: (nch,nch), u_{ij}^{ext}'(a)
-        complex*16,allocatable::f(:,:,:)       !size: (nr,nch,nch), f_{i,n}^{j}=>f_{ij,n}
-        complex*16,allocatable::wf_int(:,:,:)  !size: (nr,nch,nch), internal wf u_{ij} (r)
-        complex*16,allocatable::vl1(:,:),vr1(:,:) !size: (nch*nr,nch*nr), left and right eigenvectors
-        complex*16,allocatable::w1(:) !size: (nch*nr), eigenvalues
+        complex*16,allocatable::uij(:,:)  !wf at boundary point u_{ij}(R=a), shape: (nch,nch)
+        complex*16,allocatable::uijp(:,:) !derivative of wf at boundary point u'_{ij}(R=a)
+        complex*16,allocatable::f(:,:,:)  !expansion coefficients of each channel's wf_{int},shape:(nr,nch,nch) 
+        complex*16,allocatable::wf_int(:,:,:) !each channel's internal wf, shape:(nr,nch,nch)
+        real*8,allocatable::Gamma(:)     !width
 ccccccc
-        integer,allocatable::index(:)
+        complex*16,allocatable::vl1(:,:),vr1(:,:) !left and right eigenvectors
+        complex*16,allocatable::w1(:)             !complex eigenvalues
+ccccccc
+        integer,allocatable::index(:)   !index of eigenvalues
         end module      
 ccccccc
         module mesh 
@@ -87,7 +89,7 @@ ccccccc
 ccccccc
         module parameter
             implicit none
-            real*8,parameter :: hbarc=1d0!197.3269718d0  !hbar      ! NIST Ref 02.12.2014   ! MeV.fm           
+            real*8,parameter :: hbarc=197.3269718d0  !hbar      ! NIST Ref 02.12.2014   ! MeV.fm           
             real*8,parameter :: finec=137.03599d0
             real*8,parameter :: amu=931.49432d0      !MeV
             real*8,parameter :: e2=1.43997d0         !MeV.fm

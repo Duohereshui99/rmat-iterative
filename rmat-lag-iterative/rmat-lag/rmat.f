@@ -22,6 +22,6 @@ ccccccc
             deallocate(Vc)
             call cpu_time(t2)
 ccccccc
-            write(*,*) 'running time: ',t2-t1
+            write(*,*) 'Running time: ',t2-t1
 ccccccc
         end program 

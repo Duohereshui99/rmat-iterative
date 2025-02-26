@@ -3,23 +3,23 @@
 #Sd: spin of d, jt: total J for 2b system, Ed: excitation of daughter nucleus
 #------------------------------------------------------------------#
 
-&channelbeta    beta%Pi_tot=1d0   beta%j_tot=1d0      
-                beta%Pi_d=1d0     beta%jd=0d0       beta%Ed=0d0               
-                beta%Pi_alpha=1d0 beta%j_alpha=0d0       /
+&channelbeta    beta%Pi_tot=-1d0   beta%j_tot=1d0      
+                beta%Pi_d=-1d0     beta%jd=1d0       beta%Ed=0d0               
+                beta%Pi_alpha=1d0  beta%j_alpha=0d0   /
 
 
-&meshs       nr=100       rmax=80d0         /
+&meshs       nr=120      rmax=100d0         /
 
 
 
-&systems     mass_d=240d0    mass_alpha=4d0     
-             z_d=96d0        z_alpha=2d0                       /
+&systems    E=24.9631578947d0    mass_d=93d0    mass_alpha=2d0     
+            z_d=41d0     z_alpha=1d0                           /
 
 
-&potentials str='c'          /
+&potentials str='t'          /
 
 
-&deformation beta_2=0.224   beta_4=0.087   v_0=400d0      /
+&deformation beta_2=0.224   beta_4=0.087   v_0=100d0/
 
 
 

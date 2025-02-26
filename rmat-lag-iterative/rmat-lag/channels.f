@@ -35,7 +35,7 @@ ccccccc
 !channel notation β=|l jd j>,2b system only requires one index β (1 configuration)
         type(channel)::beta 
 !total energy E
-        complex*16::E,E_0
+        real*8::E 
 ccccccc
         contains
 !this subroutine calculates the number of channels for the 2b decay of alpha type
@@ -47,16 +47,19 @@ ccccccc
         integer::l
         real*8::tol
 ccccccc
+!i: sum/iterative variable
+        integer::i
+ccccccc
         tol=1e-6
 ccccccc         
         beta%nchmax=0
 ccccccc       
-!         beta%lmin=min(nint(abs(beta%j_tot-abs(beta%jd-beta%j_alpha))),nint(beta%j_tot+abs(beta%jd-beta%j_alpha))
-!      &   ,nint(abs(beta%j_tot-(beta%jd+beta%j_alpha))),nint(beta%j_tot+beta%jd+beta%j_alpha))
-!         beta%lmax=max(nint(abs(beta%j_tot-abs(beta%jd-beta%j_alpha))),nint(beta%j_tot+abs(beta%jd-beta%j_alpha))
-!      &   ,nint(abs(beta%j_tot-(beta%jd+beta%j_alpha))),nint(beta%j_tot+beta%jd+beta%j_alpha))
-        beta%lmin=0d0
-        beta%lmax=6d0
+         beta%lmin=min(nint(abs(beta%j_tot-abs(beta%jd-beta%j_alpha))),nint(beta%j_tot+abs(beta%jd-beta%j_alpha))
+     &   ,nint(abs(beta%j_tot-(beta%jd+beta%j_alpha))),nint(beta%j_tot+beta%jd+beta%j_alpha))
+         beta%lmax=max(nint(abs(beta%j_tot-abs(beta%jd-beta%j_alpha))),nint(beta%j_tot+abs(beta%jd-beta%j_alpha))
+     &   ,nint(abs(beta%j_tot-(beta%jd+beta%j_alpha))),nint(beta%j_tot+beta%jd+beta%j_alpha))
+        ! beta%lmin=0d0
+        ! beta%lmax=6d0
 ccccccc
         do l=beta%lmin,beta%lmax
              if(abs((-1d0)**l*beta%Pi_alpha*beta%Pi_d-beta%Pi_tot)<tol) then 
@@ -86,7 +89,20 @@ ccccccc
                 beta%nch=beta%nch+1
              end if
         end do
-        Ec(1)=0; Ec(2)=0.005d0; Ec(3)=0.126d0; Ec(4)=0.266d0
+    !    Ec(1)=0; Ec(2)=0.005d0; Ec(3)=0.126d0; Ec(4)=0.266d0
+    !     Ec=2.2193d0
+ccccccc
+100     format('Number of Channels=',I2)
+101     format(25('-'),'Channel Angular Momentum L',25('-'))
+102     format(I2,'th channel L = ', F15.9)
+ccccccc
+        write(*,100) beta%nchmax
+ccccccc
+        write(*,101)
+      !  lc=20
+        do i=1,beta%nchmax
+           write(*,102) i,lc(i)
+        end do
 ccccccc
         end subroutine getchannelalphaD
 

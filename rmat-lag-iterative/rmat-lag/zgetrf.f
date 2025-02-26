@@ -50,4 +50,4 @@ ccccccc
      &       work,lwork,rwork,info)
                ! write(*,*) 'info=',info
                ! deallocate(work,rwork)
-            end subroutine
+            end subroutine            
