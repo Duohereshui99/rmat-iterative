@@ -19,9 +19,8 @@ ccccccc
 ccccccc
             call rmatrix()
 ccccccc
-            deallocate(Vc)
             call cpu_time(t2)
 ccccccc
-            write(*,*) 'Running time: ',t2-t1
+            write(*,*) 'running time: ',t2-t1
 ccccccc
         end program 

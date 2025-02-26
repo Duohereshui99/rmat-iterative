@@ -1,4 +1,4 @@
-# rmat-lag-main
+# rmat-thobasis
 
 
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin http://10.10.113.49/research-group/rmat-lag-main.git
+git remote add origin http://10.10.113.49/research-group/rmat-thobasis.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](http://10.10.113.49/research-group/rmat-lag-main/-/settings/integrations)
+- [ ] [Set up project integrations](http://10.10.113.49/research-group/rmat-thobasis/-/settings/integrations)
 
 ## Collaborate with your team
 

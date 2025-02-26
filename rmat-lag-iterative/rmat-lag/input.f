@@ -9,28 +9,9 @@ ccccccc
 ccccccc
             namelist /channelbeta/ beta
             namelist /meshs/ nr,rmax
-            namelist /systems/  E,mass_d,mass_alpha,z_d,z_alpha
+            namelist /systems/  mass_d,mass_alpha,z_d,z_alpha
             namelist /potentials/ str
             namelist /deformation/ beta_2,beta_4,v_0
-ccccccc
-            character(len=70) :: title, formattedTitle
-            character(len=68) :: centeredTitle
-            integer :: titleLength, leftSpace, rightSpace
-            title = " The Program of Coupled Channels Calculation For 2B System "
-            titleLength = len_trim(title)
-            leftSpace = (68 - titleLength) / 2
-            rightSpace = 68 - titleLength - leftSpace
-ccccccc
-            write(centeredTitle, '(a, a, a)') repeat(' ', leftSpace), trim(title), repeat(' ', rightSpace)
-            write(*, 100)
-            write(*, 102)  
-            write(*, 101) centeredTitle
-            write(*, 102)  
-            write(*, 100)
-ccccccc
-100         format(70('*'))
-101         format('*', a68, '*')
-102         format('*', 68(' '), '*')
 ccccccc
             read(5,nml=channelbeta)
             read(5,nml=meshs)
@@ -43,25 +24,25 @@ ccccccc
             write(1,nml=systems)
             write(1,nml=potentials)
 ccccccc
-103         format('Channel radius=',f10.5,' fm')
-104         format('Number of lagrange-legendre basis =',i5)
-ccccccc
-            write(*,103) rmax
-            write(*,104) nr
+            E=(1d0,1d0)
 ccccccc
             z12=z_d*z_alpha
             mu=amu*(mass_d*mass_alpha/(mass_d+mass_alpha))
+            write(*,*) 'mu=',mu
 ccccccc
-!m_d=A_d, N_d=A_d-Z_d, N_d-Z_d=m_d-Z_d-Z_d=m_d-2Z_d
+!m_d=A_d,N_d=A_d-Z_d,N_d-Z_d=m_d-Z_d-Z_d=m_d-2Z_d
             I_d=(mass_d-z_d-z_d)/mass_d
 ccccccc
             R_d=(1d0+0.39*I_d)*mass_d**(1.d0/3.d0)
             r_0=R_d+1.17d0
 ccccccc
+        write(*,*) 'R_d=',R_d
+        write(*,*) 'r_0=',r_0
             aa=0.5d0+0.33d0*I_d
+            write(*,*) 'aa=',aa
 ccccccc
             R_C=1.2d0*(mass_d**(1.d0/3.d0)+mass_alpha**(1.d0/3.d0))
-ccccccc
+            write(*,*) 'hbarc**2/amu=',hbarc**2/amu/2
         end subroutine
 ccccccc
 !-----------------------------------------------------------------------
