@@ -195,7 +195,7 @@ cccccccc
 ccccccc
         case('test')
             do k=1,nr
-                Vc(k,1,1)=vpot(162.3d0,0.4d0,7.642d0,z12,xle(k)*rmax)
+                Vc(k,1,1)=vpot(161.95d0,0.4d0,7.642d0,z12,xle(k)*rmax)
                 write(222,*), xle(k)*rmax,real(Vc(k,1,1))
             end do
 
@@ -218,8 +218,9 @@ ccccccc
         complex*16,allocatable::FC_c(:),GC_c(:),FCP_c(:),GCP_c(:)
         complex*16,allocatable::SIG(:)
         integer::MODE1
+        complex*16::gamma,halflife
 ccccccc
-        E_0=(7.599d0,0.1d0)
+        E_0=(7.599d0,0d0)
 ccccccc
                 E=E_0
 ccccccc
@@ -393,13 +394,32 @@ ccccccc
         do i=1,nr 
             write(444,*) xle(i)*rmax,real(wf_int(i,1,1))
         end do
+ccccccc
 
+ccccccc
+                    ZLMIN=(0d0,0d0)
+                    NL=int(lc(1),4)
+                    ki_c=sqrt(2d0*mu*(E-Ec(1))/hbarc**2)
+                    eta_c=z_d*z_alpha*e2*mu/hbarc**2/ki_c
+                    MODE1=2
+                    KFN=0
 
-
-
-
-
-        
+ccccccc
+                    if(allocated(FC_c)) deallocate(FC_c)
+                    if(allocated(GC_c)) deallocate(GC_c)
+                    if(allocated(FCP_c)) deallocate(FCP_c)
+                    if(allocated(GCP_c)) deallocate(GCP_c)
+                    if(allocated(SIG)) deallocate(SIG)
+                    allocate(FC_c(0:NL),GC_c(0:NL),FCP_c(0:NL),GCP_c(0:NL))
+                    allocate(SIG(0:NL))
+ccccccc
+                    call COULCC(ki_c*rmax,eta_c,ZLMIN,NL+1,FC_c,GC_c,FCP_c,GCP_c,SIG,MODE1,KFN,IFAIL)
+ccccccc                 
+                    gamma=(hbarc**2d0*ki_c/mu)*abs(wf_int(nr,1,1))**2d0/(GC_c(NL)**2d0+FC_c(NL)**2d0)
+                    write(*,*) 'Gamma=',gamma
+                    halflife=hbarc*log(2d0)/gamma
+                    write(*,*) 'Halflife=',halflife*1e-23/3d0,'s'
+                    deallocate(FC_c,GC_c,FCP_c,GCP_c,SIG)
 ccccccc
         deallocate(Vc)
 ccccccc
